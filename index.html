@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analysis Tool</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <h1>📈 Stock Analysis Tool</h1>
+    </nav>
+
+    <!-- Stock Search -->
+    <section class="search-container">
+        <input type="text" id="stockSymbol" placeholder="Enter Stock Symbol (e.g. AAPL)">
+        <button onclick="fetchStockData()">Analyze</button>
+    </section>
+
+    <!-- Stock Summary Table -->
+    <section class="summary-container">
+        <h2>Stock Summary</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody id="stockSummary">
+                <tr><td colspan="2">Enter a stock symbol to view data</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Stock Price Chart -->
+    <section class="chart-container">
+        <h2>Price Trends</h2>
+        <canvas id="priceChart"></canvas>
+    </section>
+
+    <!-- Additional Financial Indicators -->
+    <section class="chart-container">
+        <h2>Financial Indicators</h2>
+        <canvas id="indicatorChart"></canvas>
+    </section>
+
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html>
