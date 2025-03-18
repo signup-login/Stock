@@ -1,0 +1,108 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: #ffffff;
+    text-align: center;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #1e1e1e;
+    padding: 15px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Search Container */
+.search-container {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.search-container input {
+    padding: 10px;
+    width: 250px;
+    border: none;
+    border-radius: 5px;
+    background-color: #222;
+    color: #fff;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00c853;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-container button:hover {
+    background-color: #00e676;
+}
+
+/* Summary Table */
+.summary-container {
+    margin: 20px auto;
+    width: 80%;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 255, 128, 0.3);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    border: 1px solid #333;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #00c853;
+    color: #000;
+}
+
+/* Chart Containers */
+.chart-container {
+    width: 90%;
+    margin: 30px auto;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 255, 128, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .search-container {
+        flex-direction: column;
+    }
+
+    .search-container input {
+        width: 90%;
+    }
+
+    .search-container button {
+        width: 90%;
+    }
+
+    .summary-container, .chart-container {
+        width: 95%;
+    }
+}
