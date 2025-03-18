@@ -1,0 +1,150 @@
+// Fetch stock data from Yahoo Finance API
+async function fetchStockData() {
+    const symbol = document.getElementById("stockSymbol").value.toUpperCase();
+    if (!symbol) {
+        alert("Please enter a stock symbol.");
+        return;
+    }
+
+    const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const stock = data.quoteResponse.result[0];
+
+        if (!stock) {
+            alert("Stock not found. Please try another symbol.");
+            return;
+        }
+
+        updateStockSummary(stock);
+    } catch (error) {
+        console.error("Error fetching stock data:", error);
+        alert("Failed to fetch stock data. Please try again.");
+    }
+}
+
+// Update stock summary table
+function updateStockSummary(stock) {
+    const summaryTable = document.getElementById("stockSummary");
+    summaryTable.innerHTML = `
+        <tr><td>Company</td><td>${stock.longName || stock.shortName}</td></tr>
+        <tr><td>Symbol</td><td>${stock.symbol}</td></tr>
+        <tr><td>Current Price</td><td>$${stock.regularMarketPrice.toFixed(2)}</td></tr>
+        <tr><td>Market Cap</td><td>${formatMarketCap(stock.marketCap)}</td></tr>
+        <tr><td>52-Week High</td><td>$${stock.fiftyTwoWeekHigh.toFixed(2)}</td></tr>
+        <tr><td>52-Week Low</td><td>$${stock.fiftyTwoWeekLow.toFixed(2)}</td></tr>
+        <tr><td>PE Ratio</td><td>${stock.trailingPE ? stock.trailingPE.toFixed(2) : "N/A"}</td></tr>
+    `;
+}
+
+// Format market cap value
+function formatMarketCap(value) {
+    if (value >= 1e12) return (value / 1e12).toFixed(2) + "T";
+    if (value >= 1e9) return (value / 1e9).toFixed(2) + "B";
+    if (value >= 1e6) return (value / 1e6).toFixed(2) + "M";
+    return value;
+
+  let priceChart, indicatorChart;
+
+// Fetch historical stock data
+async function fetchStockHistory(symbol) {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=6mo`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const chartData = data.chart.result[0];
+
+        const dates = chartData.timestamp.map(ts => new Date(ts * 1000).toLocaleDateString());
+        const prices = chartData.indicators.quote[0].close;
+
+        updatePriceChart(dates, prices);
+    } catch (error) {
+        console.error("Error fetching stock history:", error);
+    }
+}
+
+// Update Price Chart
+function updatePriceChart(labels, data) {
+    if (priceChart) priceChart.destroy();
+
+    const ctx = document.getElementById("priceChart").getContext("2d");
+    priceChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Stock Price ($)",
+                data: data,
+                borderColor: "#00c853",
+                backgroundColor: "rgba(0, 200, 83, 0.2)",
+                borderWidth: 2,
+                pointRadius: 0,
+                tension: 0.2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+}
+
+// Update Financial Indicator Chart
+function updateIndicatorChart(peRatio, fiftyTwoWeekHigh, fiftyTwoWeekLow) {
+    if (indicatorChart) indicatorChart.destroy();
+
+    const ctx = document.getElementById("indicatorChart").getContext("2d");
+    indicatorChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["PE Ratio", "52-Week High", "52-Week Low"],
+            datasets: [{
+                label: "Key Metrics",
+                data: [peRatio || 0, fiftyTwoWeekHigh, fiftyTwoWeekLow],
+                backgroundColor: ["#00c853", "#ffeb3b", "#ff5252"]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// Update Data When User Clicks "Analyze"
+async function fetchStockData() {
+    const symbol = document.getElementById("stockSymbol").value.toUpperCase();
+    if (!symbol) {
+        alert("Please enter a stock symbol.");
+        return;
+    }
+
+    const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const stock = data.quoteResponse.result[0];
+
+        if (!stock) {
+            alert("Stock not found. Please try another symbol.");
+            return;
+        }
+
+        updateStockSummary(stock);
+        fetchStockHistory(symbol);
+        updateIndicatorChart(stock.trailingPE, stock.fiftyTwoWeekHigh, stock.fiftyTwoWeekLow);
+    } catch (error) {
+        console.error("Error fetching stock data:", error);
+        alert("Failed to fetch stock data. Please try again.");
+    }
+}
+}
